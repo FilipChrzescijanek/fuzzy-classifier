@@ -1,17 +1,15 @@
-package pwr.chrzescijanek.filip.fuzzyclassifier.model.postprocessor;
+package pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class BasicDefuzzifier extends Defuzzifier {
+public class BasicDefuzzifier implements Defuzzifier {
 
     private List<String> clazzValues;
 
     public BasicDefuzzifier(List<String> clazzValues) {
-        super(Collections.emptyMap());
-
         this.clazzValues = Collections.unmodifiableList(Objects.requireNonNull(clazzValues));
     }
 

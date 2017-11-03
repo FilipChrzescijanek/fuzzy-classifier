@@ -1,15 +1,16 @@
-package pwr.chrzescijanek.filip.fuzzyclassifier.model.preprocessor;
+package pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor;
 
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
-import pwr.chrzescijanek.filip.fuzzyclassifier.model.common.FuzzySet;
+import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzySet;
 
 import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ConflictResolver {
+public class ConflictResolver implements Resolver {
 
+    @Override
     public FuzzyDataSet resolve(FuzzyDataSet dataSet) {
         Map<Map<String, FuzzySet>, String> solution =
                 dataSet
@@ -40,6 +41,7 @@ public class ConflictResolver {
                                 .stream()
                                 .allMatch(e -> !fuzzyRecord.getAttributes().equals(e.getKey())
                                                 || fuzzyRecord.getClazz().equals(e.getValue())))
+                        .distinct()
                         .collect(Collectors.toList()));
     }
 

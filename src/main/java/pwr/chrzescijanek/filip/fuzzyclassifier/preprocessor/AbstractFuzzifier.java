@@ -1,19 +1,22 @@
-package pwr.chrzescijanek.filip.fuzzyclassifier.model.preprocessor;
+package pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSet;
+import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzyLogic;
+import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzySet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
-import pwr.chrzescijanek.filip.fuzzyclassifier.model.common.FuzzySet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.model.common.NormalDistribution;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Fuzzifier {
+public abstract class AbstractFuzzifier implements Fuzzifier {
 
+    protected abstract FuzzyLogic getFuzzyLogic();
+
+    @Override
     public FuzzyDataSet fuzzify(DataSet dataSet, Stats stats) {
         return new FuzzyDataSet(
                 dataSet.getClazzAttribute(),
@@ -28,7 +31,7 @@ public class Fuzzifier {
                         Map.Entry::getKey,
                         e -> Arrays
                                 .stream(FuzzySet.values())
-                                .max(Comparator.comparing(s -> new NormalDistribution()
+                                .max(Comparator.comparing(s -> getFuzzyLogic()
                                         .getPdfForFuzzySet(s,
                                                 stats.getMeans().get(e.getKey()),
                                                 stats.getVariances().get(e.getKey()),

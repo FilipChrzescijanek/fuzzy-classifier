@@ -1,6 +1,6 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.model.common.FuzzySet;
+import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzySet;
 
 import java.util.Collections;
 import java.util.Map;

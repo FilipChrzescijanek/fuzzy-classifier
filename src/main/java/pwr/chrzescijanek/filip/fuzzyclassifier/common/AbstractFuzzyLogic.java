@@ -1,7 +1,8 @@
-package pwr.chrzescijanek.filip.fuzzyclassifier.model.common;
+package pwr.chrzescijanek.filip.fuzzyclassifier.common;
 
-public class NormalDistribution {
+public abstract class AbstractFuzzyLogic implements FuzzyLogic {
 
+    @Override
     public Double getPdfForFuzzySet(FuzzySet fuzzySet, Double mean, Double variance, Double value) {
         switch(fuzzySet) {
             case LOW:    return value > mean ? 0.0 : 1 - getPdf(mean, variance, value);
@@ -11,6 +12,7 @@ public class NormalDistribution {
         }
     }
 
+    @Override
     public Double getPdf(Double mean, Double variance, Double value) {
         return Math.exp(-(Math.pow(value - mean, 2)) / (2 * variance)) / Math.sqrt(2 * Math.PI * variance);
     }

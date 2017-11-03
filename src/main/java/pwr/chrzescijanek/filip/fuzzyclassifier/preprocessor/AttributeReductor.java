@@ -1,4 +1,4 @@
-package pwr.chrzescijanek.filip.fuzzyclassifier.model.preprocessor;
+package pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor;
 
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
@@ -7,8 +7,9 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Reductor {
+public class AttributeReductor implements Reductor {
 
+    @Override
     public FuzzyDataSet reduce(FuzzyDataSet dataSet){
         List<FuzzyRecord> records      = dataSet.getRecords();
         List<List<String>> differences = getDifferences(dataSet, records);
