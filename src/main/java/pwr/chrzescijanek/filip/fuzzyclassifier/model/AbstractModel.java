@@ -13,6 +13,7 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -32,18 +33,25 @@ public abstract class AbstractModel implements Model {
         PARAMETERS.addExpressionBracket(BracketPair.PARENTHESES);
     }
 
-    private final List<Rule> rules;
-    private final Stats      stats;
+    private final List<Rule>   rules;
+    private final List<String> classValues;
+    private final Stats        stats;
 
     protected AbstractModel(Stats stats, FuzzyDataSet fuzzyDataSet) {
-        this.stats = Objects.requireNonNull(stats);
-        this.rules = createRules(fuzzyDataSet);
+        this.rules       = Collections.unmodifiableList(createRules(fuzzyDataSet));
+        this.classValues = Collections.unmodifiableList(fuzzyDataSet.getClazzValues());
+        this.stats       = Objects.requireNonNull(stats);
     }
 
     protected abstract Rule buildRule(String clazz, Expression<String> condition);
 
     public List<Rule> getRules() {
         return rules;
+    }
+
+    @Override
+    public List<String> getClazzValues() {
+        return classValues;
     }
 
     public Stats getStats() {
@@ -66,13 +74,6 @@ public abstract class AbstractModel implements Model {
                                 .sum()));
     }
 
-    @Override
-    public List<String> getClazzValues() {
-        return getRules()
-                .stream()
-                .map(Rule::getClazz).collect(Collectors.toList());
-    }
-
     private List<Rule> createRules(FuzzyDataSet fuzzyDataSet) {
         Map<String, List<FuzzyRecord>> distinctRecords = fuzzyDataSet
                 .getRecords()
@@ -80,8 +81,8 @@ public abstract class AbstractModel implements Model {
                 .distinct()
                 .collect(Collectors.groupingBy(FuzzyRecord::getClazz));
 
-        return fuzzyDataSet
-                .getClazzValues()
+        return distinctRecords
+                .keySet()
                 .stream()
                 .map(clazz -> buildRule(distinctRecords, clazz))
                 .collect(Collectors.toList());

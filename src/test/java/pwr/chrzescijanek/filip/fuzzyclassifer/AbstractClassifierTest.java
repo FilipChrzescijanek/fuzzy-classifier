@@ -23,14 +23,14 @@ public abstract class AbstractClassifierTest {
         List<String> clazzValues = Arrays.asList("no", "yes");
         List<String> attributes = Arrays.asList("Hue", "Saturation", "Value");
         List<Record> records = Arrays.asList(
-                new Record("yes", attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 2.0))),
-                new Record("yes", attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 1.5))),
-                new Record("no", attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 1.0))),
-                new Record("no", attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 0.5)))
+                new Record("yes", attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 2.00))),
+                new Record("yes", attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 1.01))),
+                new Record("no", attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 0.99))),
+                new Record("no", attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 0.00)))
         );
         List<TestRecord> testRecords = Arrays.asList(
-                new TestRecord(attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 2.50))),
-                new TestRecord(attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 0.00)))
+                new TestRecord(attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 1.99))),
+                new TestRecord(attributes.stream().collect(Collectors.toMap(Function.identity(), attr -> 0.01)))
         );
         Map<String, Double> sharpValues = new HashMap<>();
         sharpValues.put("yes", 255.0);
