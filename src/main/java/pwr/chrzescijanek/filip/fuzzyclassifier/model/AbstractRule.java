@@ -46,10 +46,11 @@ public abstract class AbstractRule extends AbstractEvaluator<String> implements 
         return getValue(literal, evaluationContext).toString();
     }
 
+    @SuppressWarnings("unchecked")
     private Double getValue(final String literal, Object evaluationContext) {
         if (literal.contains("=")) {
-            TestRecord testRecord = (TestRecord) ((List) evaluationContext).get(0);
-            Stats      stats      = (Stats)      ((List) evaluationContext).get(1);
+            TestRecord testRecord = (TestRecord) ((List<Object>) evaluationContext).get(0);
+            Stats      stats      = (Stats)      ((List<Object>) evaluationContext).get(1);
 
             String[] entry     = literal.split("=");
             String   attribute = entry[0];

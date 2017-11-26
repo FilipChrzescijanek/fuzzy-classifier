@@ -4,7 +4,6 @@ import com.bpodgursky.jbool_expressions.Expression;
 import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzyLogic;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.AbstractModel;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.AbstractRule;
-import pwr.chrzescijanek.filip.fuzzyclassifier.type.one.TypeOneFuzzyLogic;
 
 public class TypeTwoRule extends AbstractRule {
 

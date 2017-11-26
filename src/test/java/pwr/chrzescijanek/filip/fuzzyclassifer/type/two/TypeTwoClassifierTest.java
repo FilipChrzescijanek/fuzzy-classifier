@@ -9,8 +9,6 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
 import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.CustomDefuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.AttributeReductor;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.ConflictResolver;
-import pwr.chrzescijanek.filip.fuzzyclassifier.type.one.TypeOneClassifier;
-import pwr.chrzescijanek.filip.fuzzyclassifier.type.one.TypeOneFuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.type.two.TypeTwoClassifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.type.two.TypeTwoFuzzifier;
 
@@ -27,8 +25,8 @@ public class TypeTwoClassifierTest extends AbstractClassifierTest {
                 .train(new DataSet(clazz, clazzValues, attributes, records))
                 .test (new TestDataSet(attributes, testRecords));
 
-        Assumptions.assumeTrue(testRecords.get(0).getValue() >= 0.5);
-        Assumptions.assumeTrue(testRecords.get(1).getValue() <= 0.5);
+        Assumptions.assumeTrue(testRecords.get(0).getValue() <= 0.5);
+        Assumptions.assumeTrue(testRecords.get(1).getValue() >= 0.5);
 
         new TypeTwoClassifier.Builder(new TypeTwoFuzzifier(), new ConflictResolver(), new AttributeReductor())
                 .withDefuzzifier(new CustomDefuzzifier(sharpValues))
@@ -36,8 +34,8 @@ public class TypeTwoClassifierTest extends AbstractClassifierTest {
                 .train(new DataSet(clazz, clazzValues, attributes, records))
                 .test (new TestDataSet(attributes, testRecords));
 
-        Assumptions.assumeTrue(testRecords.get(0).getValue() >= 127.5);
-        Assumptions.assumeTrue(testRecords.get(1).getValue() <= 127.5);
+        Assumptions.assumeTrue(testRecords.get(0).getValue() <= 127.5);
+        Assumptions.assumeTrue(testRecords.get(1).getValue() >= 127.5);
     }
 
 }

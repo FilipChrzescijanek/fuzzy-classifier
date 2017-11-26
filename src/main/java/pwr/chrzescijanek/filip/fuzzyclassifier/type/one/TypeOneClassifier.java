@@ -7,7 +7,7 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.model.Model;
 import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.*;
 
-public class TypeOneClassifier extends pwr.chrzescijanek.filip.fuzzyclassifier.AbstractClassifier {
+public class TypeOneClassifier extends AbstractClassifier {
 
     private TypeOneClassifier(TypeOneFuzzifier fuzzifier, Resolver resolver, Reductor reductor,
                       Defuzzifier defuzzifier) {
