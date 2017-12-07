@@ -1,7 +1,6 @@
 package pwr.chrzescijanek.filip.fuzzyclassifer.type.one;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Assumptions;
 import pwr.chrzescijanek.filip.fuzzyclassifer.AbstractClassifierTest;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Record;
@@ -26,8 +25,6 @@ public class TypeOneClassifierTest extends AbstractClassifierTest {
                 .train(new DataSet(clazz, clazzValues, attributes, records))
                 .test (new TestDataSet(attributes, testRecords));
 
-        System.out.println(testRecords.get(0).getValue());
-        System.out.println(testRecords.get(1).getValue());
         Assert.assertTrue(testRecords.get(0).getValue() <= 0.5);
         Assert.assertTrue(testRecords.get(1).getValue() >= 0.5);
 
@@ -37,8 +34,8 @@ public class TypeOneClassifierTest extends AbstractClassifierTest {
                 .train(new DataSet(clazz, clazzValues, attributes, records))
                 .test (new TestDataSet(attributes, testRecords));
 
-        System.out.println(testRecords.get(0).getValue());
-        System.out.println(testRecords.get(1).getValue());
+        System.out.println(testRecords.get(0) + " = " + testRecords.get(0).getValue());
+        System.out.println(testRecords.get(1) + " = " + testRecords.get(1).getValue());
         Assert.assertTrue(testRecords.get(0).getValue() <= 127.5);
         Assert.assertTrue(testRecords.get(1).getValue() >= 127.5);
     }
