@@ -50,7 +50,7 @@ public class Stats {
                                 Function.identity(),
                                 attribute -> dataSet
                                         .getRecords()
-                                        .parallelStream()
+                                        .stream()
                                         .mapToDouble(record -> record.getAttributes().get(attribute))
                                         .reduce(0.0,
                                                 (acc, value) -> acc +
