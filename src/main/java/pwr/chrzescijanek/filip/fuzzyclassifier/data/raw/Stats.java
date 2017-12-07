@@ -29,13 +29,13 @@ public class Stats {
     private Map<String, Double> initializeMeans(DataSet dataSet) {
         return Collections.unmodifiableMap(dataSet
                     .getAttributes()
-                    .stream()
+                    .parallelStream()
                     .collect(
                             Collectors.toMap(
                                     Function.identity(),
                                     attribute -> dataSet
                                             .getRecords()
-                                            .stream()
+                                            .parallelStream()
                                             .mapToDouble(record -> record.getAttributes().get(attribute))
                                             .average().orElse(0.0))));
     }
@@ -44,13 +44,13 @@ public class Stats {
         Integer size = dataSet.getRecords().size();
         return Collections.unmodifiableMap(dataSet
                 .getAttributes()
-                .stream()
+                .parallelStream()
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
                                 attribute -> dataSet
                                         .getRecords()
-                                        .stream()
+                                        .parallelStream()
                                         .mapToDouble(record -> record.getAttributes().get(attribute))
                                         .reduce(0.0,
                                                 (acc, value) -> acc +

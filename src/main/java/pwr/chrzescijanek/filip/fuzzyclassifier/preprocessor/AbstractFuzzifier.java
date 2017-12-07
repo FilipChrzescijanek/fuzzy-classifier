@@ -23,10 +23,11 @@ public abstract class AbstractFuzzifier implements Fuzzifier {
                 dataSet.getClazzValues(),
                 dataSet.getAttributes(),
                 dataSet.getRecords()
-                        .stream().map(record -> new FuzzyRecord(record.getClazz(),
+                		.parallelStream()
+                        .map(record -> new FuzzyRecord(record.getClazz(),
                         record.getAttributes()
                 .entrySet()
-                .stream()
+                .parallelStream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         e -> Arrays

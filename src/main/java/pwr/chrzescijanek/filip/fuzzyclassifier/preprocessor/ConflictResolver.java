@@ -15,18 +15,18 @@ public class ConflictResolver implements Resolver {
         Map<Map<String, FuzzySet>, String> solution =
                 dataSet
                 .getRecords()
-                .stream()
+                .parallelStream()
                 .collect(
                         Collectors.groupingBy(FuzzyRecord::getAttributes,
                         Collectors.groupingBy(FuzzyRecord::getClazz,
                                 Collectors.counting())))
                 .entrySet()
-                        .stream()
-                        .collect(Collectors.toMap(
+                	.parallelStream()
+                    .collect(Collectors.toMap(
                                 Map.Entry::getKey,
                                 e -> e.getValue()
                                         .entrySet()
-                                        .stream()
+                                        .parallelStream()
                                         .max(Comparator.comparing(Map.Entry::getValue))
                                         .get()
                                         .getKey()));
@@ -35,10 +35,10 @@ public class ConflictResolver implements Resolver {
                 dataSet.getClazzValues(),
                 dataSet.getAttributes(),
                 dataSet.getRecords()
-                        .stream()
+                		.parallelStream()
                         .filter(fuzzyRecord -> solution
                                 .entrySet()
-                                .stream()
+                                .parallelStream()
                                 .allMatch(e -> !fuzzyRecord.getAttributes().equals(e.getKey())
                                                 || fuzzyRecord.getClazz().equals(e.getValue())))
                         .distinct()

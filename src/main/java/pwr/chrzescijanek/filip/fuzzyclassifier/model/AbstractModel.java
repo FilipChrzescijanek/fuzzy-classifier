@@ -61,15 +61,15 @@ public abstract class AbstractModel implements Model {
     @Override
     public Map<String, Double> getProbabilitiesFor(TestRecord testRecord) {
         return getRules()
-                .stream()
+                .parallelStream()
                 .collect(Collectors.toMap(Rule::getClazz, rule -> rule.getProbabilityFor(testRecord, getStats())))
                 .entrySet()
-                .stream()
+                .parallelStream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         e -> e.getValue()
                                 / getRules()
-                                .stream()
+                                .parallelStream()
                                 .mapToDouble(rule -> rule.getProbabilityFor(testRecord, getStats()))
                                 .sum()));
     }
@@ -77,13 +77,13 @@ public abstract class AbstractModel implements Model {
     private List<Rule> createRules(FuzzyDataSet fuzzyDataSet) {
         Map<String, List<FuzzyRecord>> distinctRecords = fuzzyDataSet
                 .getRecords()
-                .stream()
+                .parallelStream()
                 .distinct()
                 .collect(Collectors.groupingBy(FuzzyRecord::getClazz));
 
         return distinctRecords
                 .keySet()
-                .stream()
+                .parallelStream()
                 .map(clazz -> buildRule(distinctRecords, clazz))
                 .collect(Collectors.toList());
     }

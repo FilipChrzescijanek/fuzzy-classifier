@@ -20,12 +20,12 @@ public class AttributeReductor implements Reductor {
                 dataSet.getClazzValues(),
                 newAttributes,
                 records
-                        .stream()
+                		.parallelStream()
                         .map(record -> new FuzzyRecord(
                                 record.getClazz(),
                                 record.getAttributes()
                                         .entrySet()
-                                        .stream()
+                                        .parallelStream()
                                         .filter(e -> newAttributes.contains(e.getKey()))
                                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))))
                         .collect(Collectors.toList()));
@@ -39,7 +39,7 @@ public class AttributeReductor implements Reductor {
                 final FuzzyRecord first = records.get(i);
                 final FuzzyRecord second = records.get(j);
                 List<String> difference = dataSet.getAttributes()
-                        .stream()
+                        .parallelStream()
                         .filter(attribute ->
                                 !first.getAttributes().get(attribute)
                                         .equals(second.getAttributes().get(attribute)))
@@ -57,17 +57,17 @@ public class AttributeReductor implements Reductor {
         List<String> newAttributes = new ArrayList<>();
         while (!differences.isEmpty()) {
             final String attribute = differences
-                    .stream()
+                    .parallelStream()
                     .flatMap(Collection::stream)
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                     .entrySet()
-                    .stream()
+                    .parallelStream()
                     .max(Comparator.comparing(Map.Entry::getValue))
                     .map(Map.Entry::getKey)
                     .get();
             newAttributes.add(attribute);
             differences = differences
-                    .stream()
+                    .parallelStream()
                     .filter(difference -> !difference.contains(attribute))
                     .collect(Collectors.toList());
         }

@@ -21,7 +21,7 @@ public class BasicDefuzzifier implements Defuzzifier {
     public Double defuzzify(Map<String, Double> probabilities) {
         return probabilities
                 .entrySet()
-                .stream()
+                .parallelStream()
                 .mapToDouble(e -> getClazzValues().indexOf(e.getKey()) * e.getValue())
                 .sum();
     }

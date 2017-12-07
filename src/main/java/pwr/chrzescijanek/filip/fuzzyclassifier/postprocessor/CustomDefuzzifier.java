@@ -16,7 +16,7 @@ public class CustomDefuzzifier implements Defuzzifier {
     public Double defuzzify(Map<String, Double> probabilities) {
         return probabilities
                 .entrySet()
-                .stream()
+                .parallelStream()
                 .mapToDouble(e -> sharpValues.get(e.getKey()) * e.getValue())
                 .sum();
     }

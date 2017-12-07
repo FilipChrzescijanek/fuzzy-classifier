@@ -83,5 +83,10 @@ public abstract class AbstractRule extends AbstractEvaluator<String> implements 
         }
         return result.toString();
     }
+    
+    @Override
+    public String toString() {
+    	return String.format("%s = %s", clazz, condition);
+    }
 
 }
