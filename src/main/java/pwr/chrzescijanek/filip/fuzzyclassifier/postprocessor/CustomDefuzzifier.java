@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class CustomDefuzzifier implements Defuzzifier {
 
-    private final Map<String, Double> sharpValues;
+	private final Map<String, Double> sharpValues;
 
     public CustomDefuzzifier(Map<String, Double> sharpValues) {
         this.sharpValues = Collections.unmodifiableMap(Objects.requireNonNull(sharpValues));
@@ -20,5 +20,9 @@ public class CustomDefuzzifier implements Defuzzifier {
                 .mapToDouble(e -> sharpValues.get(e.getKey()) * e.getValue())
                 .sum();
     }
+
+	public Map<String, Double> getSharpValues() {
+		return sharpValues;
+	}
 
 }

@@ -1,14 +1,14 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.model;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
+
 public class NullModel implements Model {
 
-    @Override
+	@Override
     public Map<String, Double> getProbabilitiesFor(TestRecord testRecord) {
         return Collections.emptyMap();
     }

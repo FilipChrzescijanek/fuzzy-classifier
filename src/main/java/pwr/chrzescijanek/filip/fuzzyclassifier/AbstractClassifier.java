@@ -1,8 +1,11 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSetStats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Model;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.NullModel;
@@ -11,9 +14,6 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Reductor;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Resolver;
-
-import java.util.Objects;
-import java.util.Optional;
 
 public abstract class AbstractClassifier implements Classifier {
 
@@ -32,7 +32,7 @@ public abstract class AbstractClassifier implements Classifier {
         this.reductor    = reductor;
     }
 
-    protected abstract Model createModel(Stats stats, FuzzyDataSet fuzzyDataSet);
+    protected abstract Model createModel(DataSetStats stats, FuzzyDataSet fuzzyDataSet);
 
     public Fuzzifier getFuzzifier() {
         return fuzzifier;
@@ -63,9 +63,8 @@ public abstract class AbstractClassifier implements Classifier {
         this.model = model;
     }
 
-    @Override
     public Classifier train(DataSet dataSet) {
-        Stats stats = new Stats(dataSet);
+        DataSetStats stats = new DataSetStats(dataSet);
         FuzzyDataSet fuzzyDataSet = getReductor()
                 .reduce(getResolver()
                         .resolve(getFuzzifier()
@@ -76,8 +75,8 @@ public abstract class AbstractClassifier implements Classifier {
     }
 
     @Override
-    public void test(TestDataSet testDataSet) {
-        testDataSet
+    public void test(TestDataSet dataSet) {
+    	dataSet
                 .getTestRecords()
                 .forEach(testRecord ->
                         testRecord.setValue(

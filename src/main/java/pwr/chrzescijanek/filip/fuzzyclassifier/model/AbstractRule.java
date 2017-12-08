@@ -1,18 +1,19 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.model;
 
-import com.bpodgursky.jbool_expressions.Expression;
-import com.fathzer.soft.javaluator.AbstractEvaluator;
-import com.fathzer.soft.javaluator.Operator;
-import com.fathzer.soft.javaluator.Parameters;
-import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzyLogic;
-import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzySet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+
+import com.bpodgursky.jbool_expressions.Expression;
+import com.fathzer.soft.javaluator.AbstractEvaluator;
+import com.fathzer.soft.javaluator.Operator;
+import com.fathzer.soft.javaluator.Parameters;
+
+import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzyLogic;
+import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzySet;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
 
 public abstract class AbstractRule extends AbstractEvaluator<String> implements Rule {
 
@@ -48,11 +49,11 @@ public abstract class AbstractRule extends AbstractEvaluator<String> implements 
 
     @SuppressWarnings("unchecked")
     private Double getValue(final String literal, Object evaluationContext) {
-        if (literal.contains("=")) {
+        if (literal.contains("_")) {
             TestRecord testRecord = (TestRecord) ((List<Object>) evaluationContext).get(0);
             Stats      stats      = (Stats)      ((List<Object>) evaluationContext).get(1);
 
-            String[] entry     = literal.split("=");
+            String[] entry     = literal.split("_");
             String   attribute = entry[0];
             FuzzySet fuzzySet  = FuzzySet.valueOf(entry[1]);
             Double   value     = testRecord.getAttributes().get(attribute);

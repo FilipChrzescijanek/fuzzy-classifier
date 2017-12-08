@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class BasicDefuzzifier implements Defuzzifier {
-
-    private List<String> clazzValues;
+	
+	private List<String> clazzValues;
 
     public BasicDefuzzifier(List<String> clazzValues) {
         this.clazzValues = Collections.unmodifiableList(Objects.requireNonNull(clazzValues));

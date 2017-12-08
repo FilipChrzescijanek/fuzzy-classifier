@@ -1,6 +1,7 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.type.two;
 
 import com.bpodgursky.jbool_expressions.Expression;
+
 import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzyLogic;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.AbstractModel;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.AbstractRule;

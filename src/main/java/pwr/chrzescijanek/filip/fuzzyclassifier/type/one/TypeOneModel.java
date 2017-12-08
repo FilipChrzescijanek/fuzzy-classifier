@@ -1,17 +1,19 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.type.one;
 
-import com.bpodgursky.jbool_expressions.*;
+import java.util.Optional;
+
+import com.bpodgursky.jbool_expressions.Expression;
+import com.bpodgursky.jbool_expressions.Variable;
 import com.bpodgursky.jbool_expressions.rules.RuleSet;
+
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSetStats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.AbstractModel;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Rule;
 
-import java.util.*;
-
 public class TypeOneModel extends AbstractModel {
 
-    public TypeOneModel(FuzzyDataSet fuzzyDataSet, Stats stats) {
+	public TypeOneModel(FuzzyDataSet fuzzyDataSet, DataSetStats stats) {
         super(stats, fuzzyDataSet);
     }
 

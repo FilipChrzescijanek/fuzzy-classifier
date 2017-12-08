@@ -2,7 +2,7 @@ package pwr.chrzescijanek.filip.fuzzyclassifier.type.two;
 
 import pwr.chrzescijanek.filip.fuzzyclassifier.AbstractClassifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSetStats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Model;
 import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Reductor;
@@ -16,7 +16,7 @@ public class TypeTwoClassifier extends AbstractClassifier {
     }
 
     @Override
-    protected Model createModel(Stats stats, FuzzyDataSet fuzzyDataSet) {
+    protected Model createModel(DataSetStats stats, FuzzyDataSet fuzzyDataSet) {
         return new TypeTwoModel(fuzzyDataSet, stats);
     }
 

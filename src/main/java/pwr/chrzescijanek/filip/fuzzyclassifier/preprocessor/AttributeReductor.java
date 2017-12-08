@@ -1,15 +1,19 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
+
 public class AttributeReductor implements Reductor {
 
-    @Override
+	@Override
     public FuzzyDataSet reduce(FuzzyDataSet dataSet){
         List<FuzzyRecord> records      = dataSet.getRecords();
         List<List<String>> differences = getDifferences(dataSet, records);

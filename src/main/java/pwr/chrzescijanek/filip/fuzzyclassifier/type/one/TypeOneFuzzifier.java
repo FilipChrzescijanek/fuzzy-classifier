@@ -5,7 +5,7 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.AbstractFuzzifier;
 
 public class TypeOneFuzzifier extends AbstractFuzzifier {
 
-    @Override
+	@Override
     protected FuzzyLogic getFuzzyLogic() {
         return new TypeOneFuzzyLogic();
     }
