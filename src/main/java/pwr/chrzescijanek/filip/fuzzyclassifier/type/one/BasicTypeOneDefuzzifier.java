@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class BasicTypeOneDefuzzifier extends AbstractTypeOneDefuzzifier {
-
+	
     private final List<String> clazzValues;
 
     public BasicTypeOneDefuzzifier(List<String> clazzValues) {
@@ -24,7 +24,7 @@ public class BasicTypeOneDefuzzifier extends AbstractTypeOneDefuzzifier {
     public Double defuzzify(Map<String, Double> probabilities, double sum) {
         return probabilities
                 .entrySet()
-                .stream()
+                .parallelStream()
                 .mapToDouble(e -> getClazzValues().indexOf(e.getKey()) * e.getValue() / sum)
                 .sum();
     }

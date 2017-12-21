@@ -1,15 +1,19 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
+
 public class AttributeReductor implements Reductor {
 
-    @Override
+	@Override
     public FuzzyDataSet reduce(FuzzyDataSet dataSet){
         List<FuzzyRecord> records      = dataSet.getRecords();
         List<List<String>> differences = getDifferences(dataSet, records);
@@ -20,12 +24,12 @@ public class AttributeReductor implements Reductor {
                 dataSet.getClazzValues(),
                 newAttributes,
                 records
-                        .stream()
+                		.parallelStream()
                         .map(record -> new FuzzyRecord(
                                 record.getClazz(),
                                 record.getAttributes()
                                         .entrySet()
-                                        .stream()
+                                        .parallelStream()
                                         .filter(e -> newAttributes.contains(e.getKey()))
                                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))))
                         .collect(Collectors.toList()));
@@ -39,7 +43,7 @@ public class AttributeReductor implements Reductor {
                 final FuzzyRecord first = records.get(i);
                 final FuzzyRecord second = records.get(j);
                 List<String> difference = dataSet.getAttributes()
-                        .stream()
+                        .parallelStream()
                         .filter(attribute ->
                                 !first.getAttributes().get(attribute)
                                         .equals(second.getAttributes().get(attribute)))
@@ -57,17 +61,17 @@ public class AttributeReductor implements Reductor {
         List<String> newAttributes = new ArrayList<>();
         while (!differences.isEmpty()) {
             final String attribute = differences
-                    .stream()
+                    .parallelStream()
                     .flatMap(Collection::stream)
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                     .entrySet()
-                    .stream()
+                    .parallelStream()
                     .max(Comparator.comparing(Map.Entry::getValue))
                     .map(Map.Entry::getKey)
                     .get();
             newAttributes.add(attribute);
             differences = differences
-                    .stream()
+                    .parallelStream()
                     .filter(difference -> !difference.contains(attribute))
                     .collect(Collectors.toList());
         }

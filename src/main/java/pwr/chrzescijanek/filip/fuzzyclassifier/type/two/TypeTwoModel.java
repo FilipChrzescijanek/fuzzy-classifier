@@ -1,21 +1,22 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.type.two;
 
+import java.util.Optional;
+
 import com.bpodgursky.jbool_expressions.Expression;
 import com.bpodgursky.jbool_expressions.Variable;
 import com.bpodgursky.jbool_expressions.rules.RuleSet;
+
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSetStats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.AbstractModel;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Rule;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
 public class TypeTwoModel extends AbstractModel<Range> {
 
-    public TypeTwoModel(FuzzyDataSet fuzzyDataSet, Stats stats) {
+    public TypeTwoModel(FuzzyDataSet fuzzyDataSet, DataSetStats stats) {
         super(stats, fuzzyDataSet);
     }
 
