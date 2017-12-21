@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class NullModel implements Model {
+public class NullModel<T> implements Model<T> {
 
     @Override
-    public Map<String, Double> getProbabilitiesFor(TestRecord testRecord) {
+    public Map<String, T> getProbabilitiesFor(TestRecord testRecord) {
         return Collections.emptyMap();
     }
 

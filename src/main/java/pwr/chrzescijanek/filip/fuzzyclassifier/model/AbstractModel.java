@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public abstract class AbstractModel implements Model {
+public abstract class AbstractModel<T> implements Model<T> {
 
     public static final Operator AND = new Operator("&", 2, Operator.Associativity.LEFT, 2);
     public static final Operator OR  = new Operator("|", 2, Operator.Associativity.LEFT, 1);
@@ -59,20 +59,14 @@ public abstract class AbstractModel implements Model {
     }
 
     @Override
-    public Map<String, Double> getProbabilitiesFor(TestRecord testRecord) {
+    public Map<String, T> getProbabilitiesFor(TestRecord testRecord) {
         return getRules()
                 .stream()
-                .collect(Collectors.toMap(Rule::getClazz, rule -> rule.getProbabilityFor(testRecord, getStats())))
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        e -> e.getValue()
-                                / getRules()
-                                .stream()
-                                .mapToDouble(rule -> rule.getProbabilityFor(testRecord, getStats()))
-                                .sum()));
+                .collect(
+                        Collectors.toMap(Rule::getClazz, rule -> getProbabilityFor(testRecord, rule)));
     }
+
+    protected abstract T getProbabilityFor(TestRecord testRecord, Rule rule);
 
     private List<Rule> createRules(FuzzyDataSet fuzzyDataSet) {
         Map<String, List<FuzzyRecord>> distinctRecords = fuzzyDataSet

@@ -6,7 +6,7 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Model;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.NullModel;
-import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.BasicDefuzzifier;
+import pwr.chrzescijanek.filip.fuzzyclassifier.type.one.BasicTypeOneDefuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Reductor;
@@ -15,16 +15,16 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Resolver;
 import java.util.Objects;
 import java.util.Optional;
 
-public abstract class AbstractClassifier implements Classifier {
+public abstract class AbstractClassifier<T> implements Classifier {
 
     private final Fuzzifier fuzzifier;
     private final Resolver  resolver;
     private final Reductor  reductor;
 
-    private   Defuzzifier defuzzifier;
-    protected Model       model;
+    protected Defuzzifier<T> defuzzifier;
+    protected Model<T>       model;
 
-    protected AbstractClassifier(Defuzzifier defuzzifier, Resolver resolver,
+    protected AbstractClassifier(Defuzzifier<T> defuzzifier, Resolver resolver,
                               Fuzzifier fuzzifier, Reductor reductor) {
         this.defuzzifier = defuzzifier;
         this.resolver    = resolver;
@@ -32,7 +32,7 @@ public abstract class AbstractClassifier implements Classifier {
         this.reductor    = reductor;
     }
 
-    protected abstract Model createModel(Stats stats, FuzzyDataSet fuzzyDataSet);
+    protected abstract Model<T> createModel(Stats stats, FuzzyDataSet fuzzyDataSet);
 
     public Fuzzifier getFuzzifier() {
         return fuzzifier;
@@ -46,20 +46,15 @@ public abstract class AbstractClassifier implements Classifier {
         return reductor;
     }
 
-    public Defuzzifier getDefuzzifier() {
-        return Optional.ofNullable(defuzzifier)
-                .orElse(new BasicDefuzzifier(getModel().getClazzValues()));
-    }
+    public abstract Defuzzifier<T> getDefuzzifier();
 
-    public void setDefuzzifier(Defuzzifier defuzzifier) {
+    public abstract Model<T> getModel();
+
+    public void setDefuzzifier(Defuzzifier<T> defuzzifier) {
         this.defuzzifier = Objects.requireNonNull(defuzzifier);
     }
 
-    public Model getModel() {
-        return Optional.ofNullable(model).orElse(new NullModel());
-    }
-
-    protected void setModel(Model model) {
+    protected void setModel(Model<T> model) {
         this.model = model;
     }
 
@@ -85,7 +80,7 @@ public abstract class AbstractClassifier implements Classifier {
                                         .defuzzify(getModel().getProbabilitiesFor(testRecord))));
     }
 
-    public abstract static class Builder {
+    public abstract static class Builder<T> {
 
         protected final Fuzzifier fuzzifier;
         protected final Resolver resolver;
@@ -99,7 +94,7 @@ public abstract class AbstractClassifier implements Classifier {
             this.reductor  = Objects.requireNonNull(reductor);
         }
 
-        public Builder withDefuzzifier(Defuzzifier defuzzifier) {
+        public Builder withDefuzzifier(Defuzzifier<T> defuzzifier) {
             this.defuzzifier = Objects.requireNonNull(defuzzifier);
             return this;
         }
