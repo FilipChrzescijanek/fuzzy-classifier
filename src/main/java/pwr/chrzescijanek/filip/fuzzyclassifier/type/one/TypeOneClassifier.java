@@ -6,6 +6,7 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSetStats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Model;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.NullModel;
 import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
+import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Reductor;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Resolver;
 

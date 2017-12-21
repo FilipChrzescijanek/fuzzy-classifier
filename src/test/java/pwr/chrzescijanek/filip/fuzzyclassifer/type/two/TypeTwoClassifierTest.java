@@ -36,8 +36,8 @@ public class TypeTwoClassifierTest extends AbstractClassifierTest {
         topSharpValues.put("yes",   15.0);
         topSharpValues.put("no",  255.0);
 
-        System.out.println(testRecords.get(0).getValue());
-        System.out.println(testRecords.get(1).getValue());
+        System.out.println(testRecords.get(0) + " = " + testRecords.get(0).getValue());
+        System.out.println(testRecords.get(1) + " = " + testRecords.get(1).getValue());
         Assert.assertTrue(testRecords.get(0).getValue() <= 0.5);
         Assert.assertTrue(testRecords.get(1).getValue() >= 0.5);
 
@@ -47,8 +47,8 @@ public class TypeTwoClassifierTest extends AbstractClassifierTest {
                 .train(new DataSet(clazz, clazzValues, attributes, records))
                 .test (new TestDataSet(attributes, testRecords));
 
-        System.out.println(testRecords.get(0).getValue());
-        System.out.println(testRecords.get(1).getValue());
+        System.out.println(testRecords.get(0) + " = " + testRecords.get(0).getValue());
+        System.out.println(testRecords.get(1) + " = " + testRecords.get(1).getValue());
         Assert.assertTrue(testRecords.get(0).getValue() <= 127.5);
         Assert.assertTrue(testRecords.get(1).getValue() >= 127.5);
     }

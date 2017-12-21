@@ -43,11 +43,11 @@ public class Rule extends AbstractEvaluator<String> {
 
     @SuppressWarnings("unchecked")
     private Double getValue(final String literal, Object evaluationContext) {
-        if (literal.contains("=")) {
+        if (literal.contains("_")) {
             TestRecord testRecord = (TestRecord) ((List<Object>) evaluationContext).get(0);
             Stats      stats      = (Stats)      ((List<Object>) evaluationContext).get(1);
 
-            String[] entry     = literal.split("=");
+            String[] entry     = literal.split("_");
             String   attribute = entry[0];
             FuzzySet fuzzySet  = FuzzySet.valueOf(entry[1]);
             Double   value     = testRecord.getAttributes().get(attribute);
