@@ -21,7 +21,7 @@ public class BasicTypeOneDefuzzifier extends AbstractTypeOneDefuzzifier {
     }
 
     @Override
-    public Double defuzzify(Map<String, Double> probabilities, double sum) {
+    protected Double defuzzify(Map<String, Double> probabilities, double sum) {
         return probabilities
                 .entrySet()
                 .parallelStream()

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSetStats;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Model;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.NullModel;
@@ -32,7 +32,7 @@ public abstract class AbstractClassifier<T> implements Classifier {
         this.reductor    = reductor;
     }
 
-    protected abstract Model<T> createModel(DataSetStats stats, FuzzyDataSet fuzzyDataSet);
+    protected abstract Model<T> createModel(Stats stats, FuzzyDataSet fuzzyDataSet);
 
     public Fuzzifier getFuzzifier() {
         return fuzzifier;
@@ -59,7 +59,7 @@ public abstract class AbstractClassifier<T> implements Classifier {
     }
 
     public Classifier train(DataSet dataSet) {
-        DataSetStats stats = new DataSetStats(dataSet);
+        Stats stats = new Stats(dataSet);
         FuzzyDataSet fuzzyDataSet = getReductor()
                 .reduce(getResolver()
                         .resolve(getFuzzifier()

@@ -1,15 +1,15 @@
-package pwr.chrzescijanek.filip.fuzzyclassifier.model;
+package pwr.chrzescijanek.filip.fuzzyclassifier.type.one;
 
 import pwr.chrzescijanek.filip.fuzzyclassifier.Classifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
 
-public class SimpleClassifier implements Classifier {
+public class SimpleTypeOneClassifier implements Classifier {
 
-	private final SimpleModel model;
-	private final Defuzzifier        defuzzifier;
+	private final TypeOneModel model;
+	private final Defuzzifier<Double> defuzzifier;
 	
-	public SimpleClassifier(SimpleModel model, Defuzzifier defuzzifier) {
+	public SimpleTypeOneClassifier(TypeOneModel model, Defuzzifier<Double> defuzzifier) {
 		this.model       = model;
 		this.defuzzifier = defuzzifier;
 	}
@@ -24,11 +24,11 @@ public class SimpleClassifier implements Classifier {
                                 .defuzzify(getModel().getProbabilitiesFor(testRecord))));
 	}
 
-	private SimpleModel getModel() {
+	private TypeOneModel getModel() {
 		return model;
 	}
 
-	private Defuzzifier getDefuzzifier() {
+	private Defuzzifier<Double> getDefuzzifier() {
 		return defuzzifier;
 	}
 

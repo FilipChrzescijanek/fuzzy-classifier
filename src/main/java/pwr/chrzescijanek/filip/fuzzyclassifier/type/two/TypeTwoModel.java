@@ -1,5 +1,6 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.type.two;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.bpodgursky.jbool_expressions.Expression;
@@ -7,7 +8,6 @@ import com.bpodgursky.jbool_expressions.Variable;
 import com.bpodgursky.jbool_expressions.rules.RuleSet;
 
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSetStats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.AbstractModel;
@@ -17,8 +17,27 @@ import java.util.Map;
 import java.util.stream.Collectors;
 public class TypeTwoModel extends AbstractModel<Range> {
 
-    public TypeTwoModel(FuzzyDataSet fuzzyDataSet, DataSetStats stats) {
+    private final Stats bottomStats;
+    private final Stats topStats;
+
+    public TypeTwoModel(FuzzyDataSet fuzzyDataSet, Stats stats) {
         super(stats, fuzzyDataSet);
+        Map<String, Double> means = getStats().getMeans();
+        Map<String, Double> bottomVariances = multiplyVariances(0.9);
+        Map<String, Double> topVariances = multiplyVariances(1.1);
+
+        bottomStats = new Stats(means, bottomVariances);
+        topStats = new Stats(means, topVariances);
+    }
+
+    public TypeTwoModel(List<Rule> rules, List<String> classValues, Stats stats) {
+        super(rules, classValues, stats);
+        Map<String, Double> means = getStats().getMeans();
+        Map<String, Double> bottomVariances = multiplyVariances(0.9);
+        Map<String, Double> topVariances = multiplyVariances(1.1);
+
+        bottomStats = new Stats(means, bottomVariances);
+        topStats = new Stats(means, topVariances);
     }
 
     @Override
@@ -29,12 +48,6 @@ public class TypeTwoModel extends AbstractModel<Range> {
 
     @Override
     protected Range getProbabilityFor(TestRecord testRecord, Rule rule) {
-        Map<String, Double> bottomVariances = multiplyVariances(0.9);
-        Map<String, Double> topVariances = multiplyVariances(1.1);
-        Map<String, Double> means = getStats().getMeans();
-
-        Stats bottomStats = new Stats(means, bottomVariances);
-        Stats topStats = new Stats(means, topVariances);
         return new Range(rule.getProbabilityFor(testRecord, bottomStats),
                 rule.getProbabilityFor(testRecord, topStats));
     }

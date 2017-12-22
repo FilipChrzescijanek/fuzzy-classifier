@@ -17,7 +17,6 @@ import com.fathzer.soft.javaluator.Parameters;
 import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzySet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSetStats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
 
@@ -39,9 +38,15 @@ public abstract class AbstractModel<T> implements Model<T> {
     private final List<String> classValues;
     private final Stats        stats;
 
-    protected AbstractModel(DataSetStats stats, FuzzyDataSet fuzzyDataSet) {
+    protected AbstractModel(Stats stats, FuzzyDataSet fuzzyDataSet) {
         this.rules       = Collections.unmodifiableList(createRules(fuzzyDataSet));
         this.classValues = Collections.unmodifiableList(fuzzyDataSet.getClazzValues());
+        this.stats       = Objects.requireNonNull(stats);
+    }
+
+    protected AbstractModel(List<Rule> rules, List<String> classValues, Stats stats) {
+        this.rules       = Collections.unmodifiableList(Objects.requireNonNull(rules));
+        this.classValues = Collections.unmodifiableList(Objects.requireNonNull(classValues));
         this.stats       = Objects.requireNonNull(stats);
     }
 
