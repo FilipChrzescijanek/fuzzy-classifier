@@ -1,7 +1,5 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.type.one;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;

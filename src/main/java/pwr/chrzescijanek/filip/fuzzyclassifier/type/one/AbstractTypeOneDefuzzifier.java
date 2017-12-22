@@ -1,8 +1,8 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.type.one;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
-
 import java.util.Map;
+
+import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
 
 public abstract class AbstractTypeOneDefuzzifier implements Defuzzifier<Double> {
 

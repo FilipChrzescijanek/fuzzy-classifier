@@ -1,5 +1,7 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.type.two;
 
+import java.util.Optional;
+
 import pwr.chrzescijanek.filip.fuzzyclassifier.AbstractClassifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
@@ -10,12 +12,10 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Reductor;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Resolver;
 
-import java.util.Optional;
-
 public class TypeTwoClassifier extends AbstractClassifier<Range> {
 
     private TypeTwoClassifier(Fuzzifier fuzzifier, Resolver resolver, Reductor reductor,
-                              Defuzzifier defuzzifier) {
+                              Defuzzifier<Range> defuzzifier) {
         super(defuzzifier, resolver, fuzzifier, reductor);
     }
 
@@ -42,7 +42,7 @@ public class TypeTwoClassifier extends AbstractClassifier<Range> {
         }
 
         @Override
-        public AbstractClassifier build() {
+        public AbstractClassifier<Range> build() {
             return new TypeTwoClassifier(fuzzifier, resolver, reductor, defuzzifier);
         }
 

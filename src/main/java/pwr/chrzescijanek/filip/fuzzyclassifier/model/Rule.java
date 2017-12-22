@@ -1,18 +1,18 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.model;
 
-import com.bpodgursky.jbool_expressions.Expression;
-import com.fathzer.soft.javaluator.AbstractEvaluator;
-import com.fathzer.soft.javaluator.Operator;
-import com.fathzer.soft.javaluator.Parameters;
-import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzyLogic;
-import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzySet;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+
+import com.bpodgursky.jbool_expressions.Expression;
+import com.fathzer.soft.javaluator.AbstractEvaluator;
+import com.fathzer.soft.javaluator.Operator;
+
+import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzyLogic;
+import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzySet;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
 
 public class Rule extends AbstractEvaluator<String> {
 
@@ -76,6 +76,11 @@ public class Rule extends AbstractEvaluator<String> {
             throw new IllegalArgumentException();
         }
         return result.toString();
+    }
+    
+    @Override
+    public String toString() {
+    	return String.format("%s = %s", clazz, condition);
     }
 
 }

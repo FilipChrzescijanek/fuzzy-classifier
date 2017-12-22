@@ -4,12 +4,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.bpodgursky.jbool_expressions.And;
 import com.bpodgursky.jbool_expressions.Expression;
 import com.bpodgursky.jbool_expressions.Or;
 import com.bpodgursky.jbool_expressions.Variable;
+import com.bpodgursky.jbool_expressions.rules.RuleSet;
 import com.fathzer.soft.javaluator.BracketPair;
 import com.fathzer.soft.javaluator.Operator;
 import com.fathzer.soft.javaluator.Parameters;
@@ -39,18 +41,16 @@ public abstract class AbstractModel<T> implements Model<T> {
     private final Stats        stats;
 
     protected AbstractModel(Stats stats, FuzzyDataSet fuzzyDataSet) {
-        this.rules       = Collections.unmodifiableList(createRules(fuzzyDataSet));
         this.classValues = Collections.unmodifiableList(fuzzyDataSet.getClazzValues());
+        this.rules       = Collections.unmodifiableList(createRules(fuzzyDataSet));
         this.stats       = Objects.requireNonNull(stats);
     }
 
     protected AbstractModel(List<Rule> rules, List<String> classValues, Stats stats) {
-        this.rules       = Collections.unmodifiableList(Objects.requireNonNull(rules));
         this.classValues = Collections.unmodifiableList(Objects.requireNonNull(classValues));
+        this.rules       = Collections.unmodifiableList(Objects.requireNonNull(rules));
         this.stats       = Objects.requireNonNull(stats);
     }
-
-    protected abstract Rule buildRule(String clazz, Expression<String> condition);
 
     public List<Rule> getRules() {
         return rules;
@@ -82,8 +82,7 @@ public abstract class AbstractModel<T> implements Model<T> {
                 .distinct()
                 .collect(Collectors.groupingBy(FuzzyRecord::getClazz));
 
-        return distinctRecords
-                .keySet()
+        return getClazzValues()
                 .parallelStream()
                 .map(clazz -> buildRule(distinctRecords, clazz))
                 .collect(Collectors.toList());
@@ -91,7 +90,7 @@ public abstract class AbstractModel<T> implements Model<T> {
 
     private Rule buildRule(Map<String, List<FuzzyRecord>> distinctRecords, String clazz) {
         Expression<String> alternative = null;
-        for (FuzzyRecord fr : distinctRecords.get(clazz)) {
+        for (FuzzyRecord fr : distinctRecords.getOrDefault(clazz, Collections.emptyList())) {
             Expression<String> conjunction = null;
             for (Map.Entry<String, FuzzySet> entry : fr.getAttributes().entrySet()) {
                 Expression<String> variable = Variable.of(entry.toString().replace('=', '_'));
@@ -108,6 +107,11 @@ public abstract class AbstractModel<T> implements Model<T> {
             }
         }
         return buildRule(clazz, alternative);
+    }
+
+    private Rule buildRule(String clazz, Expression<String> condition) {
+        return new Rule(RuleSet
+                .simplify(Optional.ofNullable(condition).orElse(Variable.of("0"))), clazz);
     }
 
 }

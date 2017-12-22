@@ -1,15 +1,12 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Model;
-import pwr.chrzescijanek.filip.fuzzyclassifier.model.NullModel;
-import pwr.chrzescijanek.filip.fuzzyclassifier.type.one.BasicTypeOneDefuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Reductor;
@@ -85,7 +82,7 @@ public abstract class AbstractClassifier<T> implements Classifier {
         protected final Resolver resolver;
         protected final Reductor reductor;
 
-        protected Defuzzifier defuzzifier;
+        protected Defuzzifier<T> defuzzifier;
 
         protected Builder(Fuzzifier fuzzifier, Resolver resolver, Reductor reductor) {
             this.fuzzifier = Objects.requireNonNull(fuzzifier);
@@ -93,12 +90,12 @@ public abstract class AbstractClassifier<T> implements Classifier {
             this.reductor  = Objects.requireNonNull(reductor);
         }
 
-        public Builder withDefuzzifier(Defuzzifier<T> defuzzifier) {
+        public Builder<T> withDefuzzifier(Defuzzifier<T> defuzzifier) {
             this.defuzzifier = Objects.requireNonNull(defuzzifier);
             return this;
         }
 
-        public abstract AbstractClassifier build();
+        public abstract AbstractClassifier<T> build();
 
     }
 }

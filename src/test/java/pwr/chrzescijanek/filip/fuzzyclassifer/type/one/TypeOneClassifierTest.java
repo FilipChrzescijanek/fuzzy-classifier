@@ -1,19 +1,20 @@
 package pwr.chrzescijanek.filip.fuzzyclassifer.type.one;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Assert;
+
 import pwr.chrzescijanek.filip.fuzzyclassifer.AbstractClassifierTest;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.DataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Record;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
-import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
-import pwr.chrzescijanek.filip.fuzzyclassifier.type.one.CustomTypeOneDefuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.AttributeReductor;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.ConflictResolver;
+import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
+import pwr.chrzescijanek.filip.fuzzyclassifier.type.one.CustomTypeOneDefuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.type.one.TypeOneClassifier;
-
-import java.util.List;
-import java.util.Map;
 
 public class TypeOneClassifierTest extends AbstractClassifierTest {
 

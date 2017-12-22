@@ -1,9 +1,14 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.type.two;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
 
 public abstract class AbstractTypeTwoDefuzzifier implements Defuzzifier<Range> {
 
@@ -64,8 +69,8 @@ public abstract class AbstractTypeTwoDefuzzifier implements Defuzzifier<Range> {
                 .collect(Collectors.toList());
     }
 
-    private List<Double> initializeWithAverages(Map<String, Range> probabilities, List<Map.Entry<String, Double>> sortedBottomValues) {
-        return sortedBottomValues.stream()
+    private List<Double> initializeWithAverages(Map<String, Range> probabilities, List<Map.Entry<String, Double>> sorted) {
+        return sorted.stream()
                 .map(e -> {
                     Range range = probabilities.get(e.getKey());
                     return (range.getLeft() + range.getRight()) / 2.0;

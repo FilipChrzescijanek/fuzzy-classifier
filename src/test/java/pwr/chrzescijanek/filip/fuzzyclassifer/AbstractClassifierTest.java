@@ -1,14 +1,14 @@
 package pwr.chrzescijanek.filip.fuzzyclassifer;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Record;
-import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Record;
+import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
 
 public abstract class AbstractClassifierTest {
 
