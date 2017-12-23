@@ -8,13 +8,13 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Model;
 import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
-import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
+import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.AbstractFuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Reductor;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Resolver;
 
 public abstract class AbstractClassifier<T> implements Classifier {
 
-    private final Fuzzifier fuzzifier;
+    private final AbstractFuzzifier fuzzifier;
     private final Resolver  resolver;
     private final Reductor  reductor;
 
@@ -22,7 +22,7 @@ public abstract class AbstractClassifier<T> implements Classifier {
     protected Model<T>       model;
 
     protected AbstractClassifier(Defuzzifier<T> defuzzifier, Resolver resolver,
-                              Fuzzifier fuzzifier, Reductor reductor) {
+                              AbstractFuzzifier fuzzifier, Reductor reductor) {
         this.defuzzifier = defuzzifier;
         this.resolver    = resolver;
         this.fuzzifier   = fuzzifier;
@@ -31,7 +31,7 @@ public abstract class AbstractClassifier<T> implements Classifier {
 
     protected abstract Model<T> createModel(Stats stats, FuzzyDataSet fuzzyDataSet);
 
-    public Fuzzifier getFuzzifier() {
+    public AbstractFuzzifier getFuzzifier() {
         return fuzzifier;
     }
 
@@ -78,13 +78,13 @@ public abstract class AbstractClassifier<T> implements Classifier {
 
     public abstract static class Builder<T> {
 
-        protected final Fuzzifier fuzzifier;
+        protected final AbstractFuzzifier fuzzifier;
         protected final Resolver resolver;
         protected final Reductor reductor;
 
         protected Defuzzifier<T> defuzzifier;
 
-        protected Builder(Fuzzifier fuzzifier, Resolver resolver, Reductor reductor) {
+        protected Builder(AbstractFuzzifier fuzzifier, Resolver resolver, Reductor reductor) {
             this.fuzzifier = Objects.requireNonNull(fuzzifier);
             this.resolver  = Objects.requireNonNull(resolver);
             this.reductor  = Objects.requireNonNull(reductor);

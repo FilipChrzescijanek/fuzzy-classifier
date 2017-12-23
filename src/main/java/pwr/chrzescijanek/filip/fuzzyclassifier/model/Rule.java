@@ -34,7 +34,11 @@ public class Rule extends AbstractEvaluator<String> {
     }
 
     public Double getProbabilityFor(TestRecord testRecord, Stats stats) {
-        return Double.parseDouble(evaluate(condition.toString(), Arrays.asList(testRecord, stats)));
+        return getProbabilityFor(testRecord, stats, stats);
+    }
+
+    public Double getProbabilityFor(TestRecord testRecord, Stats stats, Stats invertedStats) {
+        return Double.parseDouble(evaluate(condition.toString(), Arrays.asList(testRecord, stats, invertedStats)));
     }
 
     protected String toValue(String literal, Object evaluationContext) {
@@ -44,8 +48,9 @@ public class Rule extends AbstractEvaluator<String> {
     @SuppressWarnings("unchecked")
     private Double getValue(final String literal, Object evaluationContext) {
         if (literal.contains("_")) {
-            TestRecord testRecord = (TestRecord) ((List<Object>) evaluationContext).get(0);
-            Stats      stats      = (Stats)      ((List<Object>) evaluationContext).get(1);
+            TestRecord testRecord    = (TestRecord) ((List<Object>) evaluationContext).get(0);
+            Stats      stats         = (Stats)      ((List<Object>) evaluationContext).get(1);
+            Stats      invertedStats = (Stats)      ((List<Object>) evaluationContext).get(2);
 
             String[] entry     = literal.split("_");
             String   attribute = entry[0];
@@ -57,6 +62,7 @@ public class Rule extends AbstractEvaluator<String> {
                             fuzzySet,
                             stats.getMeans()    .get(attribute),
                             stats.getVariances().get(attribute),
+                            invertedStats.getVariances().get(attribute),
                             value);
         } else {
             return Double.parseDouble(literal);

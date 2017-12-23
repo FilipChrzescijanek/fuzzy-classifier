@@ -8,13 +8,12 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.Model;
 import pwr.chrzescijanek.filip.fuzzyclassifier.model.NullModel;
 import pwr.chrzescijanek.filip.fuzzyclassifier.postprocessor.Defuzzifier;
-import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Reductor;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Resolver;
 
 public class TypeOneClassifier extends AbstractClassifier<Double> {
 
-    private TypeOneClassifier(Fuzzifier fuzzifier, Resolver resolver, Reductor reductor,
+    private TypeOneClassifier(TypeOneFuzzifier fuzzifier, Resolver resolver, Reductor reductor,
                       Defuzzifier<Double> defuzzifier) {
         super(defuzzifier, resolver, fuzzifier, reductor);
     }
@@ -37,13 +36,13 @@ public class TypeOneClassifier extends AbstractClassifier<Double> {
 
     public static class Builder extends AbstractClassifier.Builder<Double> {
 
-        public Builder(Fuzzifier fuzzifier, Resolver resolver, Reductor reductor) {
+        public Builder(TypeOneFuzzifier fuzzifier, Resolver resolver, Reductor reductor) {
             super(fuzzifier, resolver, reductor);
         }
 
         @Override
         public AbstractClassifier<Double> build() {
-            return new TypeOneClassifier(fuzzifier, resolver, reductor, defuzzifier);
+            return new TypeOneClassifier((TypeOneFuzzifier) fuzzifier, resolver, reductor, defuzzifier);
         }
 
     }

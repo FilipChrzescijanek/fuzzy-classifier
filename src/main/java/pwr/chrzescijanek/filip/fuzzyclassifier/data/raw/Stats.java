@@ -10,6 +10,9 @@ public class Stats {
 
 	private final Map<String, Double> means;
 	private final Map<String, Double> variances;
+    private Map<String, Double> widerVariances;
+    private Map<String, Double> narrowerVariances;
+
 
 	public Stats(DataSet dataSet) {
 		this.means     = initializeMeans(Objects.requireNonNull(dataSet));
@@ -20,6 +23,20 @@ public class Stats {
 		this.means     = Collections.unmodifiableMap(Objects.requireNonNull(means));
 		this.variances = Collections.unmodifiableMap(Objects.requireNonNull(variances));
 	}
+	
+	public Stats widen() {
+		if (getWiderVariances() == null) {
+			setWiderVariances(Collections.unmodifiableMap(multiplyVariances(1.21)));
+		}
+		return new Stats(getMeans(), getWiderVariances());
+	}
+	
+	public Stats narrow() {
+		if (getNarrowerVariances() == null) {
+			setNarrowerVariances(Collections.unmodifiableMap(multiplyVariances(0.81)));
+		}
+		return new Stats(getMeans(), getNarrowerVariances());
+	}
 
 	public Map<String, Double> getMeans() {
 		return means;
@@ -27,6 +44,22 @@ public class Stats {
 
 	public Map<String, Double> getVariances() {
 		return variances;
+	}
+
+	public Map<String, Double> getWiderVariances() {
+		return widerVariances;
+	}
+
+	public Map<String, Double> getNarrowerVariances() {
+		return narrowerVariances;
+	}
+
+	public void setWiderVariances(Map<String, Double> widerVariances) {
+		this.widerVariances = widerVariances;
+	}
+
+	public void setNarrowerVariances(Map<String, Double> narrowerVariances) {
+		this.narrowerVariances = narrowerVariances;
 	}
 
 	private Map<String, Double> initializeMeans(DataSet dataSet) {
@@ -59,5 +92,16 @@ public class Stats {
 												(acc, value) -> acc +
 														Math.pow(value - getMeans().get(attribute), 2) / (size - 1)))));
 	}
+
+	private Map<String, Double> multiplyVariances(double factor) {
+        return getVariances()
+                .entrySet()
+                .parallelStream()
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            e -> e.getValue() * factor
+                    ));
+    }
+
 
 }

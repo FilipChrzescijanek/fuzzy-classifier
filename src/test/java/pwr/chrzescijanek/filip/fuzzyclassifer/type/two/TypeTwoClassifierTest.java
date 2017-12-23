@@ -13,16 +13,16 @@ import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.test.TestRecord;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.AttributeReductor;
 import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.ConflictResolver;
-import pwr.chrzescijanek.filip.fuzzyclassifier.preprocessor.Fuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.type.two.CustomTypeTwoDefuzzifier;
 import pwr.chrzescijanek.filip.fuzzyclassifier.type.two.TypeTwoClassifier;
+import pwr.chrzescijanek.filip.fuzzyclassifier.type.two.TypeTwoFuzzifier;
 
 public class TypeTwoClassifierTest extends AbstractClassifierTest {
 
     @Override
     protected void testClassifier(String clazz, List<String> clazzValues, List<String> attributes,
                                 List<Record> records, List<TestRecord> testRecords, Map<String, Double> sharpValues) {
-        new TypeTwoClassifier.Builder(new Fuzzifier(), new ConflictResolver(), new AttributeReductor())
+        new TypeTwoClassifier.Builder(new TypeTwoFuzzifier(), new ConflictResolver(), new AttributeReductor())
                 .build()
                 .train(new DataSet(clazz, clazzValues, attributes, records))
                 .test (new TestDataSet(attributes, testRecords));
@@ -39,7 +39,7 @@ public class TypeTwoClassifierTest extends AbstractClassifierTest {
         Assert.assertTrue(testRecords.get(0).getValue() <= 0.5);
         Assert.assertTrue(testRecords.get(1).getValue() >= 0.5);
 
-        new TypeTwoClassifier.Builder(new Fuzzifier(), new ConflictResolver(), new AttributeReductor())
+        new TypeTwoClassifier.Builder(new TypeTwoFuzzifier(), new ConflictResolver(), new AttributeReductor())
                 .withDefuzzifier(new CustomTypeTwoDefuzzifier(bottomSharpValues, topSharpValues))
                 .build()
                 .train(new DataSet(clazz, clazzValues, attributes, records))
