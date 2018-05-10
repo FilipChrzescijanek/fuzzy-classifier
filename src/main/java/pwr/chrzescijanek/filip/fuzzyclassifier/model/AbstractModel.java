@@ -1,6 +1,8 @@
 package pwr.chrzescijanek.filip.fuzzyclassifier.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +18,6 @@ import com.fathzer.soft.javaluator.BracketPair;
 import com.fathzer.soft.javaluator.Operator;
 import com.fathzer.soft.javaluator.Parameters;
 
-import pwr.chrzescijanek.filip.fuzzyclassifier.common.FuzzySet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyDataSet;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.fuzzy.FuzzyRecord;
 import pwr.chrzescijanek.filip.fuzzyclassifier.data.raw.Stats;
@@ -76,30 +77,23 @@ public abstract class AbstractModel<T> implements Model<T> {
     protected abstract T getProbabilityFor(TestRecord testRecord, Rule rule);
 
     private List<Rule> createRules(FuzzyDataSet fuzzyDataSet) {
-        Map<String, List<FuzzyRecord>> distinctRecords = fuzzyDataSet
-                .getRecords()
-                .parallelStream()
-                .distinct()
-                .collect(Collectors.groupingBy(FuzzyRecord::getClazz));
-
+    	Map<FuzzyRecord, List<List<String>>> differences = getDifferences(fuzzyDataSet);
+    	
         return getClazzValues()
                 .parallelStream()
-                .map(clazz -> buildRule(distinctRecords, clazz))
+                .map(clazz -> buildRule(fuzzyDataSet, differences, clazz))
                 .collect(Collectors.toList());
     }
 
-    private Rule buildRule(Map<String, List<FuzzyRecord>> distinctRecords, String clazz) {
+    private Rule buildRule(FuzzyDataSet fuzzyDataSet, Map<FuzzyRecord, List<List<String>>> differences, 
+    		String clazz) {
         Expression<String> alternative = null;
-        for (FuzzyRecord fr : distinctRecords.getOrDefault(clazz, Collections.emptyList())) {
-            Expression<String> conjunction = null;
-            for (Map.Entry<String, FuzzySet> entry : fr.getAttributes().entrySet()) {
-                Expression<String> variable = Variable.of(entry.toString().replace('=', '_'));
-                if (conjunction == null) {
-                    conjunction = variable;
-                } else {
-                    conjunction = And.of(conjunction, variable);
-                }
-            }
+        List<FuzzyRecord> clazzRecords = fuzzyDataSet.getRecords().parallelStream()
+        		.filter(r -> r.getClazz().equals(clazz))
+        		.collect(Collectors.toList());
+		for (FuzzyRecord fr : clazzRecords) {
+            Expression<String> conjunction = getImplicants(differences, fr);
+            
             if (alternative == null && conjunction != null) {
                 alternative = conjunction;
             } else if (conjunction != null) {
@@ -112,6 +106,55 @@ public abstract class AbstractModel<T> implements Model<T> {
     private Rule buildRule(String clazz, Expression<String> condition) {
         return new Rule(RuleSet
                 .simplify(Optional.ofNullable(condition).orElse(Variable.of("0"))), clazz);
+    }
+    
+    private Expression<String> getImplicants(Map<FuzzyRecord, List<List<String>>> differences, FuzzyRecord fr) {
+        Expression<String> conjunction = null;
+    	for (List<String> diff : differences.get(fr)) {
+            Expression<String> alternative = null;
+        	for (String a : diff) {
+                Expression<String> variable = Variable.of(a + "_" + fr.getAttributes().get(a));
+
+            	if (alternative == null) {
+            		alternative = variable;
+                } else {
+                	alternative = Or.of(alternative, variable);
+                }
+        	}
+
+            if (conjunction == null && alternative != null) {
+                conjunction = alternative;
+            } else if (alternative != null) {
+                conjunction = And.of(conjunction, alternative);
+            }
+        }
+    	return conjunction == null ? null : RuleSet.simplify(conjunction);
+    }
+
+    private Map<FuzzyRecord, List<List<String>>> getDifferences(FuzzyDataSet dataSet) {
+    	List<FuzzyRecord> records = dataSet.getRecords();
+    	Map<FuzzyRecord, List<List<String>>> differences = new HashMap<>();
+
+        for (int i = 0; i < records.size(); i++) {
+        	final FuzzyRecord first = records.get(i);
+        	differences.put(first, new ArrayList<>());
+            for (int j = 0; j < records.size(); j++) {
+                final FuzzyRecord second = records.get(j);
+                if (!first.getClazz().equals(second.getClazz())) {
+	                List<String> difference = dataSet.getAttributes()
+	                        .parallelStream()
+	                        .filter(attribute ->
+	                                !first.getAttributes().get(attribute)
+	                                        .equals(second.getAttributes().get(attribute)))
+	                        .collect(Collectors.toList());
+	                if (!difference.isEmpty()) {
+	                	differences.get(first).add(difference);
+	                }
+                }
+            }
+        }
+
+        return differences;
     }
 
 }

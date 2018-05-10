@@ -32,6 +32,7 @@ public class AttributeReductor implements Reductor {
                                         .parallelStream()
                                         .filter(e -> newAttributes.contains(e.getKey()))
                                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue))))
+                        .distinct()
                         .collect(Collectors.toList()));
     }
 
